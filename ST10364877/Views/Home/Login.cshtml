@@ -1,0 +1,54 @@
+﻿@model ST10364877.Models.LoginViewModel
+@{
+    ViewData["Title"] = "Login - Disaster Alleviation Foundation";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="glass-card p-4 p-md-5">
+                <div class="text-center mb-4">
+                    <div class="stat-card mb-3 mx-auto" style="width: 80px; height: 80px; padding: 1rem;">
+                        <i class="fas fa-sign-in-alt fs-3"></i>
+                    </div>
+                    <h2 class="fw-bold gradient-text">Welcome Back</h2>
+                    <p class="text-muted">Sign in to your account to continue making a difference</p>
+                </div>
+
+                <form asp-action="Login" method="post">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="All" class="alert alert-danger rounded-3"></div>
+
+                    <div class="form-group mb-4">
+                        <label asp-for="Username" class="form-label fw-bold text-dark">Username</label>
+                        <input asp-for="Username" class="form-modern" placeholder="Enter your username" />
+                        <span asp-validation-for="Username" class="text-danger small mt-1"></span>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label asp-for="Password" class="form-label fw-bold text-dark">Password</label>
+                        <input asp-for="Password" class="form-modern" type="password" placeholder="Enter your password" />
+                        <span asp-validation-for="Password" class="text-danger small mt-1"></span>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-modern btn-lg">
+                            <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                        </button>
+                    </div>
+                </form>
+
+                <div class="text-center mt-4">
+                    <p class="text-muted mb-2">Don't have an account?</p>
+                    <a asp-action="Register" class="btn btn-outline-primary">
+                        <i class="fas fa-user-plus me-2"></i>Create Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

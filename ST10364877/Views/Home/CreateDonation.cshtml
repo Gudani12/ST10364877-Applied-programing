@@ -1,0 +1,247 @@
+﻿@model ST10364877.Models.DonationViewModel
+@{
+    ViewData["Title"] = "Make Contribution - Disaster Alleviation Foundation";
+}
+
+<style>
+    .donation-type-option {
+        border: 2px solid rgba(0,0,0,0.1);
+        border-radius: 15px;
+        padding: 25px 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+        .donation-type-option:hover {
+            border-color: var(--success);
+            transform: translateY(-3px);
+        }
+
+        .donation-type-option.selected {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+    .impact-meter {
+        height: 8px;
+        background: #e9ecef;
+        border-radius: 10px;
+        overflow: hidden;
+        margin: 15px 0;
+    }
+
+    .impact-fill {
+        height: 100%;
+        background: linear-gradient(135deg, var(--success), #059669);
+        border-radius: 10px;
+        transition: width 0.5s ease;
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <div class="glass-card p-4 p-md-5">
+                <!-- Header -->
+                <div class="text-center mb-5">
+                    <div class="stat-card mb-3 mx-auto" style="width: 80px; height: 80px; padding: 1rem; background: linear-gradient(135deg, var(--success), #059669);">
+                        <i class="fas fa-gift fs-3"></i>
+                    </div>
+                    <h1 class="fw-bold gradient-text">Make a Contribution</h1>
+                    <p class="text-muted">Your generosity provides essential support to communities in need</p>
+                </div>
+
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
+                        <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+
+                <form asp-action="CreateDonation" method="post">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="All" class="alert alert-danger rounded-3"></div>
+
+                    <!-- Contribution Type Selection -->
+                    <div class="form-group mb-4">
+                        <label class="form-label fw-bold text-dark mb-3">Contribution Type</label>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="donation-type-option" data-type="Food">
+                                    <i class="fas fa-utensils fs-1 text-warning mb-3"></i>
+                                    <h6 class="fw-bold">Food Supplies</h6>
+                                    <small class="text-muted">Non-perishable items, canned goods</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="donation-type-option" data-type="Clothing">
+                                    <i class="fas fa-tshirt fs-1 text-info mb-3"></i>
+                                    <h6 class="fw-bold">Clothing</h6>
+                                    <small class="text-muted">New or gently used clothing</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="donation-type-option" data-type="Medical">
+                                    <i class="fas fa-first-aid fs-1 text-danger mb-3"></i>
+                                    <h6 class="fw-bold">Medical Supplies</h6>
+                                    <small class="text-muted">First aid kits, medications</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="donation-type-option" data-type="Money">
+                                    <i class="fas fa-money-bill-wave fs-1 text-success mb-3"></i>
+                                    <h6 class="fw-bold">Financial Contribution</h6>
+                                    <small class="text-muted">Monetary contributions</small>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" asp-for="DonationType" id="DonationType" />
+                        <span asp-validation-for="DonationType" class="text-danger mt-2 d-block"></span>
+                    </div>
+
+                    <!-- Item Description -->
+                    <div class="form-group mb-4">
+                        <label asp-for="ItemDescription" class="form-label fw-bold text-dark">Item Description</label>
+                        <textarea asp-for="ItemDescription" class="form-modern" rows="3"
+                                  placeholder="Please provide detailed description of what you're donating...
+• For food: 'Canned vegetables, rice, pasta, non-perishable items'
+• For clothing: 'Winter jackets, children's clothes, shoes'
+• For medical: 'Bandages, pain relievers, first aid kits, medications'
+• Be specific about quantities, conditions, and any special requirements"></textarea>
+                        <span asp-validation-for="ItemDescription" class="text-danger mt-2 d-block"></span>
+                    </div>
+
+                    <!-- Quantity & Unit -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label asp-for="Quantity" class="form-label fw-bold text-dark">Quantity</label>
+                                <input asp-for="Quantity" class="form-modern" type="number" step="0.01" min="0.01"
+                                       placeholder="Enter quantity amount" />
+                                <span asp-validation-for="Quantity" class="text-danger mt-2 d-block"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label asp-for="Unit" class="form-label fw-bold text-dark">Unit of Measure</label>
+                                <input asp-for="Unit" class="form-modern"
+                                       placeholder="kg, pieces, boxes, liters, etc." />
+                                <span asp-validation-for="Unit" class="text-danger mt-2 d-block"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Target Area -->
+                    <div class="form-group mb-4">
+                        <label asp-for="TargetArea" class="form-label fw-bold text-dark">Target Area</label>
+                        <input asp-for="TargetArea" class="form-modern"
+                               placeholder="Specific community, region, or disaster area to support" />
+                        <span asp-validation-for="TargetArea" class="text-danger mt-2 d-block"></span>
+                    </div>
+
+                    <!-- Special Instructions -->
+                    <div class="form-group mb-4">
+                        <label asp-for="SpecialInstructions" class="form-label fw-bold text-dark">Special Instructions</label>
+                        <textarea asp-for="SpecialInstructions" class="form-modern" rows="2"
+                                  placeholder="Any special delivery instructions, pickup preferences, or additional notes..."></textarea>
+                        <span asp-validation-for="SpecialInstructions" class="text-danger mt-2 d-block"></span>
+                    </div>
+
+                    <!-- Impact Visualization -->
+                    <div class="info-card mb-4">
+                        <h6 class="fw-bold text-dark mb-3">Your Impact</h6>
+                        <div class="impact-meter">
+                            <div class="impact-fill" style="width: 85%;"></div>
+                        </div>
+                        <div class="row text-center mt-3">
+                            <div class="col-4">
+                                <i class="fas fa-utensils text-warning fs-4 mb-2"></i>
+                                <small>Meals Provided</small>
+                            </div>
+                            <div class="col-4">
+                                <i class="fas fa-home text-primary fs-4 mb-2"></i>
+                                <small>Families Helped</small>
+                            </div>
+                            <div class="col-4">
+                                <i class="fas fa-heart text-danger fs-4 mb-2"></i>
+                                <small>Lives Touched</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gratitude Note -->
+                    <div class="alert alert-info rounded-3 border-0 mb-4">
+                        <h6 class="fw-bold mb-2">Thank You for Your Generosity</h6>
+                        <p class="mb-0 small">
+                            Every donation, regardless of size, makes a significant difference in someone's life.
+                            Your contribution helps provide essential support and brings hope to communities in need.
+                        </p>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <a asp-action="Index" class="btn btn-outline-secondary me-md-2">
+                            <i class="fas fa-arrow-left me-2"></i>Cancel
+                        </a>
+                        <button type="submit" class="btn btn-modern" style="background: linear-gradient(135deg, var(--success), #059669);">
+                            <i class="fas fa-paper-plane me-2"></i>Submit Contribution
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Contribution type selection
+            const donationTypeOptions = document.querySelectorAll('.donation-type-option');
+            const donationTypeInput = document.getElementById('DonationType');
+
+            donationTypeOptions.forEach(option => {
+                option.addEventListener('click', function () {
+                    // Remove selected class from all options
+                    donationTypeOptions.forEach(opt => opt.classList.remove('selected'));
+
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+
+                    // Set the value
+                    const type = this.getAttribute('data-type');
+                    donationTypeInput.value = type;
+
+                    // Update impact visualization based on type
+                    updateImpactVisualization(type);
+                });
+            });
+
+            function updateImpactVisualization(type) {
+                const impactFill = document.querySelector('.impact-fill');
+                let width = 85; // Default
+
+                switch (type) {
+                    case 'Food':
+                        width = 90;
+                        break;
+                    case 'Medical':
+                        width = 95;
+                        break;
+                    case 'Money':
+                        width = 100;
+                        break;
+                    case 'Clothing':
+                        width = 80;
+                        break;
+                }
+
+                impactFill.style.width = width + '%';
+            }
+        });
+    </script>
+}

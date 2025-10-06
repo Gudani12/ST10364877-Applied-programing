@@ -1,0 +1,107 @@
+﻿@model IEnumerable<ST10364877.Models.Donation>
+@{
+    ViewData["Title"] = "My Donations - Disaster Alleviation Foundation";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+            <h1 class="display-5 fw-bold gradient-text">My Donations</h1>
+            <p class="text-muted">Your contributions to communities in need</p>
+        </div>
+        <a asp-action="CreateDonation" class="btn btn-modern" style="background: linear-gradient(135deg, var(--success), #059669);">
+            <i class="fas fa-plus me-2"></i>Make New Contribution
+        </a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5">
+            <div class="glass-card p-5">
+                <i class="fas fa-gift display-1 text-muted mb-3"></i>
+                <h3 class="text-muted mb-3">No Donations Yet</h3>
+                <p class="text-muted mb-4">Start making a difference with your first donation.</p>
+                <a asp-action="CreateDonation" class="btn btn-modern" style="background: linear-gradient(135deg, var(--success), #059669);">
+                    <i class="fas fa-plus me-2"></i>Make First Contribution
+                </a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var donation in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="glass-card p-4 h-100">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <span class="badge @GetDonationTypeBadgeClass(donation.DonationType) px-3 py-2">
+                                @donation.DonationType
+                            </span>
+                            <small class="text-muted">@donation.DonationDate.ToString("MMM dd, yyyy")</small>
+                        </div>
+
+                        <h6 class="fw-bold text-dark mb-3">@donation.ItemDescription</h6>
+
+                        <div class="mb-2">
+                            <i class="fas fa-balance-scale text-primary me-2"></i>
+                            <span class="text-dark">@donation.Quantity @donation.Unit</span>
+                        </div>
+
+                        <div class="mb-2">
+                            <i class="fas fa-map-marker-alt text-success me-2"></i>
+                            <span class="text-dark">@donation.TargetArea</span>
+                        </div>
+
+                        <div class="mb-3">
+                            <span class="badge @GetStatusBadgeClass(donation.Status)">
+                                @donation.Status
+                            </span>
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(donation.SpecialInstructions))
+                        {
+                            <div class="alert alert-light border rounded-3 small">
+                                <i class="fas fa-sticky-note text-warning me-2"></i>
+                                @donation.SpecialInstructions
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="text-center mt-5">
+            <div class="glass-card p-4">
+                <h5 class="fw-bold gradient-text mb-3">Contribution Summary</h5>
+                <p class="text-muted mb-0">You've made <strong>@Model.Count() donations</strong> so far. Thank you for your generosity!</p>
+            </div>
+        </div>
+    }
+</div>
+
+@functions {
+    string GetDonationTypeBadgeClass(string type)
+    {
+        return type?.ToLower() switch
+        {
+            "food" => "bg-warning text-dark",
+            "clothing" => "bg-info text-dark",
+            "medical" => "bg-danger",
+            "money" => "bg-success",
+            _ => "bg-secondary"
+        };
+    }
+
+    string GetStatusBadgeClass(string status)
+    {
+        return status?.ToLower() switch
+        {
+            "pending" => "bg-warning text-dark",
+            "received" => "bg-info text-dark",
+            "distributed" => "bg-success",
+            "cancelled" => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+}

@@ -1,0 +1,213 @@
+﻿@model ST10364877.Models.IncidentReportViewModel
+@{
+    ViewData["Title"] = "Report Incident - Disaster Alleviation Foundation";
+}
+
+<style>
+    .urgency-option {
+        border: 2px solid rgba(0,0,0,0.1);
+        border-radius: 12px;
+        padding: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+        .urgency-option:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .urgency-option.selected {
+            border-color: var(--danger);
+            background: rgba(239, 68, 68, 0.05);
+        }
+</style>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <div class="glass-card p-4 p-md-5">
+                <!-- Header -->
+                <div class="text-center mb-5">
+                    <div class="stat-card mb-3 mx-auto" style="width: 80px; height: 80px; padding: 1rem; background: linear-gradient(135deg, var(--danger), #dc2626);">
+                        <i class="fas fa-exclamation-triangle fs-3"></i>
+                    </div>
+                    <h1 class="fw-bold gradient-text">Report Emergency Incident</h1>
+                    <p class="text-muted">Provide accurate information to ensure timely response and assistance</p>
+                </div>
+
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
+                        <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+
+                <form asp-action="ReportIncident" method="post">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="All" class="alert alert-danger rounded-3"></div>
+
+                    <!-- Incident Title -->
+                    <div class="form-group mb-4">
+                        <label asp-for="Title" class="form-label fw-bold text-dark">Incident Title</label>
+                        <input asp-for="Title" class="form-modern"
+                               placeholder="Brief, descriptive title of the emergency situation" />
+                        <span asp-validation-for="Title" class="text-danger mt-2 d-block"></span>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="form-group mb-4">
+                        <label asp-for="Description" class="form-label fw-bold text-dark">Detailed Description</label>
+                        <textarea asp-for="Description" class="form-modern" rows="4"
+                                  placeholder="Provide comprehensive details about what happened, current situation, immediate needs, and any other relevant information..."></textarea>
+                        <span asp-validation-for="Description" class="text-danger mt-2 d-block"></span>
+                    </div>
+
+                    <!-- Location & Date -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label asp-for="Location" class="form-label fw-bold text-dark">Location</label>
+                                <input asp-for="Location" class="form-modern"
+                                       placeholder="Specific location or area affected" />
+                                <span asp-validation-for="Location" class="text-danger mt-2 d-block"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label asp-for="IncidentDate" class="form-label fw-bold text-dark">Incident Date & Time</label>
+                                <input asp-for="IncidentDate" class="form-modern" type="datetime-local" />
+                                <span asp-validation-for="IncidentDate" class="text-danger mt-2 d-block"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Disaster Type & Urgency -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label asp-for="DisasterType" class="form-label fw-bold text-dark">Disaster Type</label>
+                                <select asp-for="DisasterType" class="form-modern">
+                                    <option value="">Select type of disaster</option>
+                                    <option value="Flood">Flood</option>
+                                    <option value="Fire">Fire</option>
+                                    <option value="Earthquake">Earthquake</option>
+                                    <option value="Storm">Storm</option>
+                                    <option value="Drought">Drought</option>
+                                    <option value="Landslide">Landslide</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <span asp-validation-for="DisasterType" class="text-danger mt-2 d-block"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label class="form-label fw-bold text-dark">Urgency Level</label>
+                                <div>
+                                    <div class="urgency-option mb-2" data-value="Low">
+                                        <div class="d-flex align-items-center">
+                                            <div class="bg-success rounded-circle p-2 me-3"></div>
+                                            <div>
+                                                <strong>Low</strong>
+                                                <small class="d-block text-muted">Minor incident, no immediate danger</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="urgency-option mb-2" data-value="Medium">
+                                        <div class="d-flex align-items-center">
+                                            <div class="bg-warning rounded-circle p-2 me-3"></div>
+                                            <div>
+                                                <strong>Medium</strong>
+                                                <small class="d-block text-muted">Significant impact, monitor closely</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="urgency-option mb-2" data-value="High">
+                                        <div class="d-flex align-items-center">
+                                            <div class="bg-orange rounded-circle p-2 me-3" style="background-color: #fd7e14;"></div>
+                                            <div>
+                                                <strong>High</strong>
+                                                <small class="d-block text-muted">Serious situation, immediate action needed</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="urgency-option" data-value="Critical">
+                                        <div class="d-flex align-items-center">
+                                            <div class="bg-danger rounded-circle p-2 me-3"></div>
+                                            <div>
+                                                <strong>Critical</strong>
+                                                <small class="d-block text-muted">Life-threatening, emergency response required</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" asp-for="UrgencyLevel" id="UrgencyLevel" />
+                                <span asp-validation-for="UrgencyLevel" class="text-danger mt-2 d-block"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Affected Areas -->
+                    <div class="form-group mb-4">
+                        <label asp-for="AffectedAreas" class="form-label fw-bold text-dark">Affected Areas & Communities</label>
+                        <input asp-for="AffectedAreas" class="form-modern"
+                               placeholder="Specific communities, neighborhoods, or regions affected" />
+                        <span asp-validation-for="AffectedAreas" class="text-danger mt-2 d-block"></span>
+                    </div>
+
+                    <!-- Emergency Alert -->
+                    <div class="alert alert-danger rounded-3 border-0 mb-4">
+                        <h6 class="fw-bold mb-2">Emergency Protocol</h6>
+                        <p class="mb-2">If this is a life-threatening emergency, please contact emergency services immediately:</p>
+                        <p class="mb-0 fw-bold">Emergency: 0800 123 456</p>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <a asp-action="Index" class="btn btn-outline-secondary me-md-2">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </a>
+                        <button type="submit" class="btn btn-modern" style="background: linear-gradient(135deg, var(--danger), #dc2626);">
+                            <i class="fas fa-paper-plane me-2"></i>Submit Emergency Report
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Urgency level selection
+            const urgencyOptions = document.querySelectorAll('.urgency-option');
+            const urgencyInput = document.getElementById('UrgencyLevel');
+
+            urgencyOptions.forEach(option => {
+                option.addEventListener('click', function () {
+                    // Remove selected class from all options
+                    urgencyOptions.forEach(opt => opt.classList.remove('selected'));
+
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+
+                    // Set the value
+                    const value = this.getAttribute('data-value');
+                    urgencyInput.value = value;
+                });
+            });
+
+            // Auto-set current time for incident date
+            const incidentDateInput = document.querySelector('input[name="IncidentDate"]');
+            if (incidentDateInput && !incidentDateInput.value) {
+                const now = new Date();
+                now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+                incidentDateInput.value = now.toISOString().slice(0, 16);
+            }
+        });
+    </script>
+}

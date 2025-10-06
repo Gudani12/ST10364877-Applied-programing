@@ -1,0 +1,305 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Disaster Alleviation Foundation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @@mixin dots($count) {
+            $text-shadow: ();
+
+            @@for $i from 0 through $count {
+                $text-shadow: $text-shadow, (-.5+(random()) * 3) + em (-.5+(random()) * 3) + em 7px hsla(random() * 360, 100%, 50%,.9);
+            }
+
+            text-shadow: $text-shadow;
+        }
+
+        .dots-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: #1a1a2e;
+        }
+
+            .dots-background::before, .dots-background::after,
+            .dots-background .dot-1, .dots-background .dot-2 {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 3em;
+                height: 3em;
+                content: '.';
+                mix-blend-mode: screen;
+                animation: 44s -27s move infinite ease-in-out alternate;
+                @@include dots(40);
+            }
+
+            .dots-background::before {
+                animation-duration: 44s;
+                animation-delay: -27s;
+            }
+
+            .dots-background::after {
+                animation-duration: 43s;
+                animation-delay: -32s;
+            }
+
+            .dots-background .dot-1 {
+                animation-duration: 42s;
+                animation-delay: -23s;
+            }
+
+            .dots-background .dot-2 {
+                animation-duration: 41s;
+                animation-delay: -19s;
+            }
+
+        @@keyframes move {
+            from {
+                transform: rotate(0deg) scale(12) translateX(-20px);
+            }
+
+            to {
+                transform: rotate(360deg) scale(18) translateX(20px);
+            }
+        }
+
+        /* Modern Design System */
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1e293b;
+            --light: #f8fafc;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-glass {
+            background: rgba(30, 41, 59, 0.95) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-modern {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border: none;
+            border-radius: 12px;
+            padding: 12px 30px;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .btn-modern::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+                transition: left 0.5s;
+            }
+
+            .btn-modern:hover::before {
+                left: 100%;
+            }
+
+            .btn-modern:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+            }
+
+        .form-modern {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(99, 102, 241, 0.1);
+            border-radius: 12px;
+            padding: 15px 20px;
+            transition: all 0.3s ease;
+        }
+
+            .form-modern:focus {
+                border-color: var(--primary);
+                box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+                background: white;
+            }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .stat-card::before {
+                content: '';
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+                animation: float 6s ease-in-out infinite;
+            }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @@keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="dots-background">
+        <div class="dot-1"></div>
+        <div class="dot-2"></div>
+    </div>
+
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark nav-glass">
+            <div class="container">
+                <a class="navbar-brand fw-bold fs-3" asp-controller="Home" asp-action="Index">
+                    <i class="fas fa-hands-helping me-2"></i>
+                    Disaster Alleviation Foundation
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-controller="Home" asp-action="Index">
+                                <i class="fas fa-home me-1"></i>Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-controller="Home" asp-action="Incidents">
+                                <i class="fas fa-exclamation-triangle me-1"></i>Incidents
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-controller="Home" asp-action="Donations">
+                                <i class="fas fa-donate me-1"></i>Donations
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-controller="Home" asp-action="Volunteers">
+                                <i class="fas fa-users me-1"></i>Volunteers
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                                    <i class="fas fa-user me-1"></i>@User.Identity.Name
+                                </a>
+                                <ul class="dropdown-menu glass-card">
+                                    <li><a class="dropdown-item" asp-controller="Home" asp-action="Profile"><i class="fas fa-chart-line me-2"></i>Profile</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Home" asp-action="Donations"><i class="fas fa-gift me-2"></i>My Donations</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Home" asp-action="MyVolunteerRegistration"><i class="fas fa-user-check me-2"></i>Volunteer Status</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <form asp-controller="Home" asp-action="Logout" method="post">
+                                            <button type="submit" class="dropdown-item"><i class="fas fa-sign-out-alt me-2"></i>Logout</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-controller="Home" asp-action="Login">
+                                    <i class="fas fa-sign-in-alt me-1"></i>Login
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-controller="Home" asp-action="Register">
+                                    <i class="fas fa-user-plus me-1"></i>Register
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main role="main" class="position-relative" style="z-index: 1;">
+        @RenderBody()
+    </main>
+
+    <footer class="text-white mt-5" style="background: rgba(30, 41, 59, 0.95); backdrop-filter: blur(10px);">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">Disaster Alleviation Foundation</h5>
+                    <p>Providing hope and assistance to communities in crisis through coordinated relief efforts and compassionate service.</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a asp-controller="Home" asp-action="ReportIncident" class="text-light text-decoration-none">Report Emergency</a></li>
+                        <li><a asp-controller="Home" asp-action="CreateDonation" class="text-light text-decoration-none">Make Donation</a></li>
+                        <li><a asp-controller="Home" asp-action="RegisterVolunteer" class="text-light text-decoration-none">Become Volunteer</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Contact Support</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">Contact Us</h5>
+                    <p><i class="fas fa-phone me-2"></i>Emergency: 0800 123 456</p>
+                    <p><i class="fas fa-envelope me-2"></i>help@foundation.org</p>
+                    <p><i class="fas fa-map-marker-alt me-2"></i>123 Hope Street, City</p>
+                </div>
+            </div>
+            <hr class="bg-light my-4">
+            <div class="text-center">
+                <p>&copy; 2024 Disaster Alleviation Foundation. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

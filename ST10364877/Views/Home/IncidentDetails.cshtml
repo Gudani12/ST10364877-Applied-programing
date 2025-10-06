@@ -1,0 +1,193 @@
+﻿@model ST10364877.Models.IncidentReport
+@{
+    ViewData["Title"] = "Incident Details - Disaster Alleviation Foundation";
+}
+
+<style>
+    .urgency-badge-large {
+        font-size: 1.1rem;
+        padding: 10px 25px;
+        border-radius: 50px;
+        font-weight: 600;
+    }
+
+    .info-card {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+        padding: 1.5rem;
+        border: 1px solid rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+
+        .info-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+</style>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-11">
+            <div class="glass-card p-4 p-md-5">
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4 pb-4 border-bottom">
+                    <div>
+                        <h1 class="fw-bold display-6 gradient-text">Incident Report Details</h1>
+                        <p class="text-muted mb-0">Comprehensive information about the reported emergency</p>
+                    </div>
+                    <span class="urgency-badge-large text-white @GetUrgencyBadgeClass(Model.UrgencyLevel)">
+                        @Model.UrgencyLevel Urgency
+                    </span>
+                </div>
+
+                <!-- Main Content -->
+                <div class="row mb-5">
+                    <div class="col-md-8">
+                        <div class="mb-4">
+                            <h2 class="fw-bold text-dark mb-3">@Model.Title</h2>
+                            <div class="info-card">
+                                <p class="lead mb-0">@Model.Description</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="info-card">
+                            <h5 class="fw-bold text-dark mb-3">Incident Summary</h5>
+                            <div class="mb-3">
+                                <strong>Status:</strong>
+                                <span class="badge @GetStatusBadgeClass(Model.Status) float-end">
+                                    @Model.Status
+                                </span>
+                            </div>
+                            <div class="mb-3">
+                                <strong>Type:</strong>
+                                <span class="float-end fw-bold">@Model.DisasterType</span>
+                            </div>
+                            <div class="mb-3">
+                                <strong>Reported:</strong>
+                                <span class="float-end">@Model.ReportedAt.ToString("MMM dd, yyyy 'at' HH:mm")</span>
+                            </div>
+                            <div>
+                                <strong>Incident ID:</strong>
+                                <span class="float-end text-muted">#@Model.IncidentId</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Details Grid -->
+                <div class="row g-4 mb-5">
+                    <!-- Location Details -->
+                    <div class="col-md-6">
+                        <div class="info-card h-100">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="stat-card me-3" style="width: 50px; height: 50px; padding: 0.8rem;">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <h5 class="fw-bold text-dark mb-0">Location Details</h5>
+                            </div>
+                            <div class="ms-5">
+                                <p class="mb-2"><strong>Location:</strong> @Model.Location</p>
+                                <p class="mb-2"><strong>Affected Areas:</strong> @(Model.AffectedAreas ?? "Multiple areas affected")</p>
+                                <p class="mb-0"><strong>Incident Date:</strong> @Model.IncidentDate.ToString("MMMM dd, yyyy 'at' HH:mm")</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reporter Information -->
+                    <div class="col-md-6">
+                        <div class="info-card h-100">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="stat-card me-3" style="width: 50px; height: 50px; padding: 0.8rem; background: linear-gradient(135deg, var(--success), #059669);">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <h5 class="fw-bold text-dark mb-0">Reporter Information</h5>
+                            </div>
+                            <div class="ms-5">
+                                <p class="mb-2"><strong>Reported By:</strong> @Model.User?.Username</p>
+                                <p class="mb-2"><strong>Contact Email:</strong> @Model.User?.Email</p>
+                                <p class="mb-0"><strong>Report Time:</strong> @Model.ReportedAt.ToString("MMMM dd, yyyy 'at' HH:mm")</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Response Actions -->
+                <div class="info-card mb-4" style="border-left: 4px solid var(--danger);">
+                    <h5 class="fw-bold text-dark mb-3">Emergency Response Required</h5>
+                    <p class="mb-3">This incident requires immediate attention and community support. Here's how you can help:</p>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="text-center p-3 bg-white rounded-3 border">
+                                <i class="fas fa-donate text-success fs-2 mb-2"></i>
+                                <h6 class="fw-bold">Provide Donations</h6>
+                                <small class="text-muted">Essential supplies needed</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center p-3 bg-white rounded-3 border">
+                                <i class="fas fa-hands-helping text-warning fs-2 mb-2"></i>
+                                <h6 class="fw-bold">Volunteer Support</h6>
+                                <small class="text-muted">Hands-on assistance required</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center p-3 bg-white rounded-3 border">
+                                <i class="fas fa-share-alt text-info fs-2 mb-2"></i>
+                                <h6 class="fw-bold">Spread Awareness</h6>
+                                <small class="text-muted">Share with your network</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="text-center mt-5">
+                    <a asp-action="Index" class="btn btn-outline-secondary me-3">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Incidents
+                    </a>
+                    <a asp-controller="Contribution" asp-action="Create" class="btn btn-modern me-3" style="background: linear-gradient(135deg, var(--success), #059669);">
+                        <i class="fas fa-donate me-2"></i>Donate to Help
+                    </a>
+                    <a asp-controller="Volunteer" asp-action="Register" class="btn btn-modern" style="background: linear-gradient(135deg, var(--warning), #d97706);">
+                        <i class="fas fa-users me-2"></i>Volunteer to Assist
+                    </a>
+                </div>
+            </div>
+
+            <!-- Safety Notice -->
+            <div class="text-center mt-4">
+                <div class="alert alert-warning rounded-3">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Safety First:</strong> Always prioritize your safety and follow official guidance during emergencies.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    string GetUrgencyBadgeClass(string urgency)
+    {
+        return urgency?.ToLower() switch
+        {
+            "critical" => "bg-danger",
+            "high" => "bg-warning",
+            "medium" => "bg-info",
+            "low" => "bg-success",
+            _ => "bg-secondary"
+        };
+    }
+
+    string GetStatusBadgeClass(string status)
+    {
+        return status?.ToLower() switch
+        {
+            "pending" => "bg-warning text-dark",
+            "under review" => "bg-info text-dark",
+            "in progress" => "bg-primary",
+            "resolved" => "bg-success",
+            _ => "bg-secondary"
+        };
+    }
+}

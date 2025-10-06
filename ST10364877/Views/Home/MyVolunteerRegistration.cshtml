@@ -1,0 +1,185 @@
+﻿@model ST10364877.Models.Volunteer
+@{
+    ViewData["Title"] = "My Volunteer Registration - Disaster Alleviation Foundation";
+}
+
+<style>
+    .profile-avatar-large {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--warning), #d97706);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 2.5rem;
+        margin: 0 auto;
+        border: 4px solid white;
+        box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
+    }
+
+    .info-item {
+        padding: 15px 0;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+
+        .info-item:hover {
+            background: rgba(99, 102, 241, 0.05);
+            border-radius: 10px;
+            padding-left: 15px;
+        }
+</style>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="glass-card p-4 p-md-5">
+                <!-- Header -->
+                <div class="text-center mb-5">
+                    <h1 class="fw-bold gradient-text">Volunteer Dashboard</h1>
+                    <p class="text-muted">Your volunteer registration and activity information</p>
+                </div>
+
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
+                        <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+
+                @if (Model == null)
+                {
+                    <div class="text-center py-5">
+                        <div class="profile-avatar-large mb-4">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <h3 class="text-muted mb-3">Not Registered as Volunteer</h3>
+                        <p class="text-muted mb-4">Join our volunteer team to start making a difference in your community.</p>
+                        <a asp-action="Register" class="btn btn-modern" style="background: linear-gradient(135deg, var(--warning), #d97706);">
+                            <i class="fas fa-user-plus me-2"></i>Register as Volunteer
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div class="row align-items-center">
+                        <!-- Profile Section -->
+                        <div class="col-md-4 text-center mb-4">
+                            <div class="profile-avatar-large mb-3">
+                                <i class="fas fa-hands-helping"></i>
+                            </div>
+                            <span class="badge bg-success fs-6 px-3 py-2">
+                                @Model.Status Volunteer
+                            </span>
+                            <div class="mt-3">
+                                <small class="text-muted">
+                                    Registered since<br>
+                                    <strong>@Model.RegisteredAt.ToString("MMMM yyyy")</strong>
+                                </small>
+                            </div>
+                        </div>
+
+                        <!-- Details Section -->
+                        <div class="col-md-8">
+                            <div class="row g-0">
+                                <div class="col-12 info-item">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="fw-bold text-dark">Skills & Expertise</span>
+                                        <span class="text-end">@Model.Skills</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 info-item">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="fw-bold text-dark">Availability</span>
+                                        <span class="text-end">@Model.Availability</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 info-item">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="fw-bold text-dark">Preferred Location</span>
+                                        <span class="text-end">@Model.PreferredLocation</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 info-item">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="fw-bold text-dark">Transportation</span>
+                                        <span class="text-end">
+                                            @if (Model.HasTransportation)
+                                            {
+                                                <span class="badge bg-success">Available</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary">Not Available</span>
+                                            }
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 info-item">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="fw-bold text-dark">Emergency Contact</span>
+                                        <span class="text-end">@Model.EmergencyContact</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Volunteer Opportunities -->
+                    <div class="mt-5 p-4 rounded-3" style="background: rgba(245, 158, 11, 0.05);">
+                        <h5 class="fw-bold text-dark mb-3">Volunteer Opportunities</h5>
+                        <div class="row g-3">
+                            @if (Model.Skills?.ToLower().Contains("first aid") == true || Model.Skills?.ToLower().Contains("medical") == true)
+                            {
+                                <div class="col-md-6">
+                                    <div class="glass-card p-3">
+                                        <span class="fw-bold text-danger">Medical Assistance Teams</span>
+                                        <small class="d-block text-muted">Provide first aid and medical support</small>
+                                    </div>
+                                </div>
+                            }
+                            @if (Model.Skills?.ToLower().Contains("construction") == true || Model.Skills?.ToLower().Contains("repair") == true)
+                            {
+                                <div class="col-md-6">
+                                    <div class="glass-card p-3">
+                                        <span class="fw-bold text-warning">Rebuilding Projects</span>
+                                        <small class="d-block text-muted">Construction and repair assistance</small>
+                                    </div>
+                                </div>
+                            }
+                            <div class="col-md-6">
+                                <div class="glass-card p-3">
+                                    <span class="fw-bold text-success">Distribution Centers</span>
+                                    <small class="d-block text-muted">Resource distribution support</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="glass-card p-3">
+                                    <span class="fw-bold text-info">Community Outreach</span>
+                                    <small class="d-block text-muted">Communication and support services</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="mt-5 text-center">
+                        <a asp-action="Index" class="btn btn-outline-primary me-3">
+                            <i class="fas fa-users me-2"></i>View All Volunteers
+                        </a>
+                        <a asp-controller="Incident" asp-action="Index" class="btn btn-outline-danger">
+                            <i class="fas fa-exclamation-triangle me-2"></i>View Active Incidents
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

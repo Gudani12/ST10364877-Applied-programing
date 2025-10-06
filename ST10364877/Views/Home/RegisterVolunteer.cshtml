@@ -1,0 +1,183 @@
+﻿@model ST10364877.Models.VolunteerViewModel
+@{
+    ViewData["Title"] = "Volunteer Registration - Disaster Alleviation Foundation";
+}
+
+<style>
+    .skill-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 8px;
+    }
+
+    .skill-tag {
+        background: rgba(99, 102, 241, 0.1);
+        color: var(--primary);
+        padding: 6px 15px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+
+        .skill-tag:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .skill-tag.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+</style>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <div class="glass-card p-4 p-md-5">
+                <!-- Header -->
+                <div class="text-center mb-5">
+                    <div class="stat-card mb-3 mx-auto" style="width: 80px; height: 80px; padding: 1rem; background: linear-gradient(135deg, var(--warning), #d97706);">
+                        <i class="fas fa-users fs-3"></i>
+                    </div>
+                    <h1 class="fw-bold gradient-text">Volunteer Registration</h1>
+                    <p class="text-muted">Join our team and make a difference in your community</p>
+                </div>
+
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show rounded-3" role="alert">
+                        <i class="fas fa-exclamation-triangle me-2"></i>@TempData["ErrorMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+
+                <form asp-action="Register" method="post">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="All" class="alert alert-danger rounded-3"></div>
+
+                    <!-- Skills Section -->
+                    <div class="form-group mb-4">
+                        <label asp-for="Skills" class="form-label fw-bold text-dark">Skills & Expertise</label>
+                        <textarea asp-for="Skills" class="form-modern" rows="3"
+                                  placeholder="Describe your skills, experience, and areas of expertise that could be valuable for disaster relief efforts..."></textarea>
+                        <span asp-validation-for="Skills" class="text-danger mt-2 d-block"></span>
+
+                        <div class="skill-tags">
+                            <span class="skill-tag" data-skill="First Aid & CPR">First Aid & CPR</span>
+                            <span class="skill-tag" data-skill="Construction">Construction</span>
+                            <span class="skill-tag" data-skill="Counseling">Counseling</span>
+                            <span class="skill-tag" data-skill="Logistics">Logistics</span>
+                            <span class="skill-tag" data-skill="Communication">Communication</span>
+                            <span class="skill-tag" data-skill="Driving">Driving</span>
+                            <span class="skill-tag" data-skill="Cooking">Cooking</span>
+                            <span class="skill-tag" data-skill="IT Support">IT Support</span>
+                        </div>
+                    </div>
+
+                    <!-- Availability Section -->
+                    <div class="form-group mb-4">
+                        <label asp-for="Availability" class="form-label fw-bold text-dark">Availability</label>
+                        <select asp-for="Availability" class="form-modern">
+                            <option value="">Select your availability</option>
+                            <option value="Weekdays">Weekdays (Monday - Friday)</option>
+                            <option value="Weekends">Weekends (Saturday - Sunday)</option>
+                            <option value="Evenings">Evenings (After 5 PM)</option>
+                            <option value="Flexible">Flexible - Anytime</option>
+                            <option value="Emergency Only">Emergency Response Only</option>
+                        </select>
+                        <span asp-validation-for="Availability" class="text-danger mt-2 d-block"></span>
+                    </div>
+
+                    <!-- Preferred Location -->
+                    <div class="form-group mb-4">
+                        <label asp-for="PreferredLocation" class="form-label fw-bold text-dark">Preferred Service Area</label>
+                        <input asp-for="PreferredLocation" class="form-modern"
+                               placeholder="Enter your preferred location for volunteer work" />
+                        <span asp-validation-for="PreferredLocation" class="text-danger mt-2 d-block"></span>
+                    </div>
+
+                    <!-- Emergency Contact -->
+                    <div class="form-group mb-4">
+                        <label asp-for="EmergencyContact" class="form-label fw-bold text-dark">Emergency Contact</label>
+                        <input asp-for="EmergencyContact" class="form-modern"
+                               placeholder="Name and phone number of emergency contact" />
+                        <span asp-validation-for="EmergencyContact" class="text-danger mt-2 d-block"></span>
+                    </div>
+
+                    <!-- Transportation -->
+                    <div class="form-group mb-4">
+                        <div class="glass-card p-4">
+                            <div class="form-check">
+                                <input asp-for="HasTransportation" class="form-check-input" style="transform: scale(1.2);" />
+                                <label asp-for="HasTransportation" class="form-check-label fw-bold text-dark">
+                                    I have reliable transportation available for volunteer work
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Information Section -->
+                    <div class="alert alert-info rounded-3 border-0 mb-4">
+                        <h6 class="fw-bold mb-2">Volunteer Commitment</h6>
+                        <p class="mb-0 small">
+                            By registering as a volunteer, you agree to be contacted for disaster relief efforts based on your availability and skills.
+                            Your information will be kept confidential and used only for coordination purposes. We appreciate your commitment to helping others.
+                        </p>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <a asp-action="Index" class="btn btn-outline-secondary me-md-2">
+                            <i class="fas fa-arrow-left me-2"></i>Cancel
+                        </a>
+                        <button type="submit" class="btn btn-modern" style="background: linear-gradient(135deg, var(--warning), #d97706);">
+                            <i class="fas fa-user-check me-2"></i>Register as Volunteer
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Skill tags functionality
+            const skillsTextarea = document.querySelector('textarea[name="Skills"]');
+            const skillTags = document.querySelectorAll('.skill-tag');
+
+            skillTags.forEach(tag => {
+                tag.addEventListener('click', function () {
+                    const skill = this.getAttribute('data-skill');
+                    const currentSkills = skillsTextarea.value;
+
+                    if (currentSkills.includes(skill)) {
+                        // Remove skill if already exists
+                        const newSkills = currentSkills.split(',')
+                            .map(s => s.trim())
+                            .filter(s => s !== skill)
+                            .join(', ');
+                        skillsTextarea.value = newSkills;
+                        this.classList.remove('selected');
+                    } else {
+                        // Add skill
+                        if (currentSkills.trim() === '') {
+                            skillsTextarea.value = skill;
+                        } else {
+                            skillsTextarea.value = currentSkills + ', ' + skill;
+                        }
+                        this.classList.add('selected');
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,101 @@
+﻿@model ST10364877.Models.RegisterViewModel
+@{
+    ViewData["Title"] = "Register - Disaster Alleviation Foundation";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            <div class="glass-card p-4 p-md-5">
+                <div class="text-center mb-4">
+                    <div class="stat-card mb-3 mx-auto" style="width: 80px; height: 80px; padding: 1rem;">
+                        <i class="fas fa-user-plus fs-3"></i>
+                    </div>
+                    <h2 class="fw-bold gradient-text">Create Home</h2>
+                    <p class="text-muted">Join our community and start making a difference today</p>
+                </div>
+
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
+                        <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+
+                <form asp-action="Register" method="post">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="All" class="alert alert-danger rounded-3"></div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label asp-for="Username" class="form-label fw-bold text-dark">Username</label>
+                                <input asp-for="Username" class="form-modern" placeholder="Choose your username" />
+                                <span asp-validation-for="Username" class="text-danger small mt-1"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label asp-for="Email" class="form-label fw-bold text-dark">Email Address</label>
+                                <input asp-for="Email" class="form-modern" placeholder="your.email@example.com" />
+                                <span asp-validation-for="Email" class="text-danger small mt-1"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label asp-for="FirstName" class="form-label fw-bold text-dark">First Name</label>
+                                <input asp-for="FirstName" class="form-modern" placeholder="Enter your first name" />
+                                <span asp-validation-for="FirstName" class="text-danger small mt-1"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label asp-for="LastName" class="form-label fw-bold text-dark">Last Name</label>
+                                <input asp-for="LastName" class="form-modern" placeholder="Enter your last name" />
+                                <span asp-validation-for="LastName" class="text-danger small mt-1"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label asp-for="PhoneNumber" class="form-label fw-bold text-dark">Phone Number</label>
+                        <input asp-for="PhoneNumber" class="form-modern" placeholder="+1 (555) 123-4567" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger small mt-1"></span>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label asp-for="Password" class="form-label fw-bold text-dark">Password</label>
+                        <input asp-for="Password" class="form-modern" type="password" placeholder="Create a strong password" />
+                        <span asp-validation-for="Password" class="text-danger small mt-1"></span>
+                    </div>
+
+                    <div class="alert alert-info rounded-3 border-0 mb-4">
+                        <h6 class="fw-bold mb-2">Home Information</h6>
+                        <p class="mb-0 small">By creating an account, you agree to our terms of service and privacy policy. Your information is secure with us.</p>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-modern btn-lg">
+                            <i class="fas fa-user-plus me-2"></i>Create Home
+                        </button>
+                    </div>
+                </form>
+
+                <div class="text-center mt-4">
+                    <p class="text-muted mb-2">Already have an account?</p>
+                    <a asp-action="Login" class="btn btn-outline-primary">
+                        <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

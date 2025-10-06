@@ -1,0 +1,191 @@
+﻿@model IEnumerable<ST10364877.Models.Donation>
+@{
+    ViewData["Title"] = "All Donations - Disaster Alleviation Foundation";
+}
+
+<div class="container mt-4">
+    <!-- Header -->
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold gradient-text">Community Donations</h1>
+        <p class="lead text-muted">Collective generosity making a difference in our communities</p>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5">
+            <div class="glass-card p-5">
+                <i class="fas fa-gift display-1 text-muted mb-3"></i>
+                <h3 class="text-muted mb-3">No Donations Yet</h3>
+                <p class="text-muted mb-4">Be the first to start the chain of generosity in our community.</p>
+                <a asp-action="Create" class="btn btn-modern" style="background: linear-gradient(135deg, var(--success), #059669);">
+                    <i class="fas fa-plus me-2"></i>Make First Contribution
+                </a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Statistics Overview -->
+        <div class="row mb-5">
+            <div class="col-md-3 mb-3">
+                <div class="stat-card">
+                    <h3 class="fw-bold display-4">@Model.Count()</h3>
+                    <p class="mb-0">Total Donations</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stat-card" style="background: linear-gradient(135deg, var(--success), #059669);">
+                    <h3 class="fw-bold display-4">@Model.Select(d => d.UserId).Distinct().Count()</h3>
+                    <p class="mb-0">Generous Donors</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stat-card" style="background: linear-gradient(135deg, var(--warning), #d97706);">
+                    <h3 class="fw-bold display-4">@Model.Count(d => d.Status == "Distributed")</h3>
+                    <p class="mb-0">Delivered to Communities</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stat-card" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                    <h3 class="fw-bold display-4">@Model.Select(d => d.TargetArea).Distinct().Count()</h3>
+                    <p class="mb-0">Communities Supported</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Donations Grid -->
+        <div class="row g-4">
+            @foreach (var donation in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="glass-card p-4 h-100">
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="stat-card me-3" style="width: 50px; height: 50px; padding: 0.8rem; @GetDonationTypeBgStyle(donation.DonationType)">
+                                <i class="@GetDonationTypeIcon(donation.DonationType)"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6 class="fw-bold text-dark mb-1">@donation.ItemDescription</h6>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="badge @GetStatusBadgeClass(donation.Status)">
+                                        @donation.Status
+                                    </span>
+                                    <small class="text-muted">@donation.DonationDate.ToString("MMM dd")</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-balance-scale text-primary me-2"></i>
+                                <span class="text-dark">@donation.Quantity @donation.Unit</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-map-marker-alt text-success me-2"></i>
+                                <span class="text-dark">@donation.TargetArea</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-user text-info me-2"></i>
+                                <span class="text-dark">@donation.User?.FirstName @donation.User?.LastName</span>
+                            </div>
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(donation.SpecialInstructions))
+                        {
+                            <div class="alert alert-light border rounded-3 small mt-3">
+                                <i class="fas fa-sticky-note text-warning me-2"></i>
+                                @donation.SpecialInstructions
+                            </div>
+                        }
+
+                        <!-- Impact Indicator -->
+                        <div class="mt-3 text-center">
+                            <span class="badge bg-light text-dark border">
+                                @GetImpactMessage(donation.DonationType, donation.Quantity)
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Community Impact Summary -->
+        <div class="mt-5">
+            <div class="glass-card p-5">
+                <div class="text-center">
+                    <h3 class="fw-bold gradient-text mb-3">Community Impact Summary</h3>
+                    <p class="lead text-muted mb-4">
+                        Together, our community has demonstrated incredible generosity. Each donation represents hope,
+                        compassion, and the power of collective action in supporting those in need.
+                    </p>
+                    <div class="row justify-content-center">
+                        <div class="col-md-4 text-center mb-3">
+                            <i class="fas fa-hands-helping text-primary fs-1 mb-2"></i>
+                            <h5 class="fw-bold">Community Support</h5>
+                            <small class="text-muted">Stronger Together</small>
+                        </div>
+                        <div class="col-md-4 text-center mb-3">
+                            <i class="fas fa-heart text-danger fs-1 mb-2"></i>
+                            <h5 class="fw-bold">Compassion</h5>
+                            <small class="text-muted">Hearts United</small>
+                        </div>
+                        <div class="col-md-4 text-center mb-3">
+                            <i class="fas fa-star text-warning fs-1 mb-2"></i>
+                            <h5 class="fw-bold">Hope</h5>
+                            <small class="text-muted">Brighter Future</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@functions {
+    string GetDonationTypeBgStyle(string type)
+    {
+        return type?.ToLower() switch
+        {
+            "food" => "background: linear-gradient(135deg, var(--warning), #d97706);",
+            "clothing" => "background: linear-gradient(135deg, var(--info), #0ea5e9);",
+            "medical" => "background: linear-gradient(135deg, var(--danger), #dc2626);",
+            "money" => "background: linear-gradient(135deg, var(--success), #059669);",
+            _ => "background: linear-gradient(135deg, var(--secondary), #64748b);"
+        };
+    }
+
+    string GetDonationTypeIcon(string type)
+    {
+        return type?.ToLower() switch
+        {
+            "food" => "fas fa-utensils",
+            "clothing" => "fas fa-tshirt",
+            "medical" => "fas fa-first-aid",
+            "money" => "fas fa-money-bill-wave",
+            _ => "fas fa-gift"
+        };
+    }
+
+    string GetStatusBadgeClass(string status)
+    {
+        return status?.ToLower() switch
+        {
+            "pending" => "bg-warning text-dark",
+            "received" => "bg-info text-dark",
+            "distributed" => "bg-success",
+            "cancelled" => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+
+    string GetImpactMessage(string type, decimal quantity)
+    {
+        return type?.ToLower() switch
+        {
+            "food" => $"{quantity} meals provided",
+            "clothing" => $"{quantity} people clothed",
+            "medical" => $"{quantity} lives protected",
+            "money" => $"${quantity} impact created",
+            _ => "Making a difference"
+        };
+    }
+}

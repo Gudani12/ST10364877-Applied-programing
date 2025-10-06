@@ -1,0 +1,93 @@
+﻿@model IEnumerable<ST10364877.Models.Volunteer>
+@{
+    ViewData["Title"] = "Volunteers - Disaster Alleviation Foundation";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+            <h1 class="display-5 fw-bold gradient-text">Our Volunteers</h1>
+            <p class="text-muted">Meet the people making a difference in our communities</p>
+        </div>
+        <a asp-action="Register" class="btn btn-modern" style="background: linear-gradient(135deg, var(--warning), #d97706);">
+            <i class="fas fa-user-plus me-2"></i>Join as Volunteer
+        </a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5">
+            <div class="glass-card p-5">
+                <i class="fas fa-users display-1 text-muted mb-3"></i>
+                <h3 class="text-muted mb-3">No Volunteers Yet</h3>
+                <p class="text-muted mb-4">Be the first to join our volunteer team.</p>
+                <a asp-action="Register" class="btn btn-modern" style="background: linear-gradient(135deg, var(--warning), #d97706);">
+                    <i class="fas fa-user-plus me-2"></i>Become First Volunteer
+                </a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var volunteer in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="glass-card p-4 h-100 text-center">
+                        <div class="stat-card mb-3 mx-auto" style="width: 80px; height: 80px; padding: 1rem; background: linear-gradient(135deg, var(--warning), #d97706);">
+                            <i class="fas fa-user fs-3"></i>
+                        </div>
+
+                        <h5 class="fw-bold text-dark mb-2">@volunteer.User?.FirstName @volunteer.User?.LastName</h5>
+                        <p class="text-muted small mb-3">Joined @volunteer.RegisteredAt.ToString("MMM yyyy")</p>
+
+                        <div class="mb-3">
+                            <span class="badge bg-primary mb-2">
+                                @volunteer.Availability
+                            </span>
+                        </div>
+
+                        <p class="small text-muted mb-3">
+                            <i class="fas fa-skills me-1"></i>
+                            @GetShortSkills(volunteer.Skills)
+                        </p>
+
+                        <div class="mb-3">
+                            <i class="fas fa-map-marker-alt text-success me-1"></i>
+                            <small>@volunteer.PreferredLocation</small>
+                        </div>
+
+                        @if (volunteer.HasTransportation)
+                        {
+                            <span class="badge bg-success mb-3">
+                                Has Transportation
+                            </span>
+                        }
+
+                        <div class="mt-auto">
+                            <span class="badge bg-success">
+                                Active Volunteer
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="text-center mt-5">
+            <div class="glass-card p-4">
+                <h5 class="fw-bold gradient-text mb-3">Volunteer Community</h5>
+                <p class="text-muted mb-0">We have <strong>@Model.Count() active volunteers</strong> ready to help. Together, we're building stronger communities!</p>
+            </div>
+        </div>
+    }
+</div>
+
+@functions {
+    string GetShortSkills(string skills)
+    {
+        if (string.IsNullOrEmpty(skills)) return "Various skills";
+        if (skills.Length > 50) return skills.Substring(0, 50) + "...";
+        return skills;
+    }
+}

@@ -1,0 +1,119 @@
+﻿@{
+    ViewData["Title"] = "Home - Disaster Alleviation Foundation";
+}
+
+<div class="container mt-5">
+    <!-- Hero Section -->
+    <div class="row align-items-center min-vh-50 py-5">
+        <div class="col-lg-6">
+            <h1 class="display-4 fw-bold gradient-text mb-4">Together We Can Make a Difference</h1>
+            <p class="lead text-dark mb-4">Providing immediate relief and long-term support to communities affected by natural disasters and emergencies through coordinated efforts and compassionate service.</p>
+            <div class="d-flex flex-wrap gap-3">
+                <a asp-controller="Home" asp-action="ReportIncident" class="btn btn-modern">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Report Emergency
+                </a>
+                <a asp-controller="Home" asp-action="CreateDonation" class="btn btn-modern" style="background: linear-gradient(135deg, var(--success), #059669);">
+                    <i class="fas fa-donate me-2"></i>Make Donation
+                </a>
+                <a asp-controller="Home" asp-action="RegisterVolunteer" class="btn btn-modern" style="background: linear-gradient(135deg, var(--warning), #d97706);">
+                    <i class="fas fa-users me-2"></i>Become Volunteer
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-6 text-center">
+            <div class="glass-card p-5 floating">
+                <i class="fas fa-hands-helping display-1 gradient-text mb-3"></i>
+                <h4 class="fw-bold text-dark">Community Driven Relief</h4>
+                <p class="text-muted">Join thousands making a difference</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="row py-5 mt-5">
+        <div class="col-12 text-center mb-5">
+            <h2 class="display-5 fw-bold gradient-text">Our Core Services</h2>
+            <p class="lead text-muted">Comprehensive disaster relief and community support</p>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="glass-card p-4 h-100 text-center">
+                <div class="stat-card mb-3 mx-auto" style="width: 80px; height: 80px; padding: 1rem;">
+                    <i class="fas fa-exclamation-circle fs-3"></i>
+                </div>
+                <h4 class="fw-bold text-dark mb-3">Emergency Reporting</h4>
+                <p class="text-muted">Quick and efficient incident reporting system ensuring timely response and assistance for disaster situations.</p>
+                <a asp-controller="Home" asp-action="ReportIncident" class="btn btn-outline-primary mt-3">Report Incident</a>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="glass-card p-4 h-100 text-center">
+                <div class="stat-card mb-3 mx-auto" style="width: 80px; height: 80px; padding: 1rem; background: linear-gradient(135deg, var(--success), #059669);">
+                    <i class="fas fa-box-open fs-3"></i>
+                </div>
+                <h4 class="fw-bold text-dark mb-3">Resource Donation</h4>
+                <p class="text-muted">Streamlined donation management for essential resources including food, clothing, and medical supplies.</p>
+                <a asp-controller="Home" asp-action="CreateDonation" class="btn btn-outline-success mt-3">Make Donation</a>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="glass-card p-4 h-100 text-center">
+                <div class="stat-card mb-3 mx-auto" style="width: 80px; height: 80px; padding: 1rem; background: linear-gradient(135deg, var(--warning), #d97706);">
+                    <i class="fas fa-users fs-3"></i>
+                </div>
+                <h4 class="fw-bold text-dark mb-3">Volunteer Coordination</h4>
+                <p class="text-muted">Comprehensive volunteer management system for coordinating relief efforts and community support.</p>
+                <a asp-controller="Home" asp-action="RegisterVolunteer" class="btn btn-outline-warning mt-3">Join Volunteers</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Section -->
+    <div class="row py-5">
+        <div class="col-12">
+            <div class="glass-card p-5">
+                <div class="row text-center">
+                    <div class="col-md-3 mb-4">
+                        <div class="stat-card">
+                            <h3 class="fw-bold display-4">500+</h3>
+                            <p class="mb-0">Lives Impacted</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="stat-card" style="background: linear-gradient(135deg, var(--success), #059669);">
+                            <h3 class="fw-bold display-4">1.2K+</h3>
+                            <p class="mb-0">Donations Received</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="stat-card" style="background: linear-gradient(135deg, var(--warning), #d97706);">
+                            <h3 class="fw-bold display-4">300+</h3>
+                            <p class="mb-0">Active Volunteers</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="stat-card" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                            <h3 class="fw-bold display-4">50+</h3>
+                            <p class="mb-0">Communities Served</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="row py-5">
+        <div class="col-12 text-center">
+            <div class="glass-card p-5">
+                <h3 class="fw-bold gradient-text mb-3">Ready to Make a Difference?</h3>
+                <p class="lead text-muted mb-4">Join our community of compassionate individuals dedicated to creating positive change.</p>
+                <a asp-controller="Home" asp-action="Register" class="btn btn-modern btn-lg">
+                    <i class="fas fa-rocket me-2"></i>Start Your Journey
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

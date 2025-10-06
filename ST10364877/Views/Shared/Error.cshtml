@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <i class="fas fa-exclamation-triangle fa-5x text-danger mb-4"></i>
+            <h1 class="text-danger">Oops! Something went wrong.</h1>
+            <p class="lead">We're sorry, but an error has occurred while processing your request.</p>
+            <div class="mt-4">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-primary">
+                    <i class="fas fa-home"></i> Go to Homepage
+                </a>
+                <button onclick="history.back()" class="btn btn-secondary ms-2">
+                    <i class="fas fa-arrow-left"></i> Go Back
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
